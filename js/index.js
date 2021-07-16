@@ -99,7 +99,7 @@ class FoodApp {
 
         this.closeModal()
         
-        this.handleFavouritesFoods(meal)
+        this.handleFavouriteFoods(meal)
     }
 
     closeModal() {
@@ -110,13 +110,19 @@ class FoodApp {
         })
     }
 
-    handleFavouritesFoods(meal) {
+    handleFavouriteFoods(meal) {
         let favouriteButtonDOM = document.querySelector(".favourite-button")
         let iconDOM = document.getElementById("icon")
         favouriteButtonDOM.addEventListener("click", () => {
             if (iconDOM.className.includes("fas")) {
                 iconDOM.classList = "far fa-heart fa-3x"
-                let index = this.favouriteFoods.indexOf(meal, 1)
+                let food = {}
+                this.favouriteFoods.forEach(element => {
+                    if(element.id === meal.id){
+                        food = element
+                    }
+                })
+                let index = this.favouriteFoods.indexOf(food)
                 this.favouriteFoods.splice(index, 1);
                 localStorage.setItem('favFoods', JSON.stringify(this.favouriteFoods));
             } else if(iconDOM.className.includes("far")) {
