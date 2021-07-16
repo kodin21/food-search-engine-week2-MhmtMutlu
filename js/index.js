@@ -1,4 +1,5 @@
 import 'regenerator-runtime/runtime'
+import Fuse from 'fuse.js'
 
 class FoodApp {
     constructor() {
@@ -11,15 +12,50 @@ class FoodApp {
         this.favouriteFoods = JSON.parse(localStorage.getItem("favFoods")) || []
         await this.getUserInformation()
         await this.getFoods()
-        this.createCards()
+        this.searchMeal()
     }
 
-    createCards() {
+    searchMeal() {
+        const options = {
+            includeScore: true,
+            keys: ['fields.strMeal']
+        }
+        const fuse = new Fuse(this.foodsArray, options)
+        this.createCards(this.foodsArray)
+        let searchInputDOM = document.querySelector(".search-input")
+        searchInputDOM.addEventListener("input", (e) => {
+            if (e.target.value === "") {
+                this.createCards(this.foodsArray)
+            } else if(e.target.value != "") {
+                const result = fuse.search(e.target.value)
+                this.searchedCards(result)
+            }
+        })
+    }
+
+    createCards(result) {
         let cardListDOM = document.querySelector(".card-list")
-        this.foodsArray.forEach((food, index) => {cardListDOM.innerHTML += `
+        cardListDOM.innerHTML = ""
+        result.forEach((food, index) => {cardListDOM.innerHTML += `
             <div id=${index} class="card">
                 <img src=${food.fields.strMealThumb}>
                 <h3>${food.fields.strMeal}</h3>
+                <button id=${index} class="details-button">See Details</button>
+            </div>
+        `})
+        let detailsButtonDOM = document.querySelectorAll(".details-button")
+        detailsButtonDOM.forEach(btn => btn.addEventListener("click", (e) => {
+            this.openModals(detailsButtonDOM[e.target.id].id)
+        }))
+    }
+
+    searchedCards(result) {
+        let cardListDOM = document.querySelector(".card-list")
+        cardListDOM.innerHTML = ""
+        result.forEach((food, index) => {cardListDOM.innerHTML += `
+            <div id=${index} class="card">
+                <img src=${food.item.fields.strMealThumb}>
+                <h3>${food.item.fields.strMeal}</h3>
                 <button id=${index} class="details-button">See Details</button>
             </div>
         `})
