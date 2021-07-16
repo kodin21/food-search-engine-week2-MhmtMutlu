@@ -28,6 +28,7 @@ class FoodApp {
                 this.createCards(this.foodsArray)
             } else if(e.target.value != "") {
                 const result = fuse.search(e.target.value)
+                console.log(result);
                 this.searchedCards(result)
             }
         })
@@ -36,38 +37,43 @@ class FoodApp {
     createCards(result) {
         let cardListDOM = document.querySelector(".card-list")
         cardListDOM.innerHTML = ""
-        result.forEach((food, index) => {cardListDOM.innerHTML += `
-            <div id=${index} class="card">
+        result.forEach((food) => {cardListDOM.innerHTML += `
+            <div id=${food.id} class="card">
                 <img src=${food.fields.strMealThumb}>
                 <h3>${food.fields.strMeal}</h3>
-                <button id=${index} class="details-button">See Details</button>
+                <button id=${food.id} class="details-button">See Details</button>
             </div>
         `})
         let detailsButtonDOM = document.querySelectorAll(".details-button")
         detailsButtonDOM.forEach(btn => btn.addEventListener("click", (e) => {
-            this.openModals(detailsButtonDOM[e.target.id].id)
+            this.openModals(e.target.id)
         }))
     }
 
     searchedCards(result) {
         let cardListDOM = document.querySelector(".card-list")
         cardListDOM.innerHTML = ""
-        result.forEach((food, index) => {cardListDOM.innerHTML += `
-            <div id=${index} class="card">
+        result.forEach((food) => {cardListDOM.innerHTML += `
+            <div id=${food.item.id} class="card">
                 <img src=${food.item.fields.strMealThumb}>
                 <h3>${food.item.fields.strMeal}</h3>
-                <button id=${index} class="details-button">See Details</button>
+                <button id=${food.item.id} class="details-button">See Details</button>
             </div>
         `})
         let detailsButtonDOM = document.querySelectorAll(".details-button")
         detailsButtonDOM.forEach(btn => btn.addEventListener("click", (e) => {
-            this.openModals(detailsButtonDOM[e.target.id].id)
+            this.openModals(e.target.id)
         }))
     }
 
     openModals(id) {
         let modalDOM = document.getElementById("modal")
-        let meal = this.foodsArray[id]
+        let meal = {}
+        this.foodsArray.forEach(element => {
+            if(element.id === id){
+                meal = element
+            }
+        })
         let emptyHeart = `<i id="icon" class="far fa-heart fa-3x"></i>`
         let filledHeart = `<i id="icon" class="fas fa-heart fa-3x"></i>`
         modalDOM.innerHTML = `
@@ -118,7 +124,6 @@ class FoodApp {
                 localStorage.setItem("favFoods", JSON.stringify(this.favouriteFoods))
                 iconDOM.classList = "fas fa-heart fa-3x"
             }
-            
         })
     }
 
