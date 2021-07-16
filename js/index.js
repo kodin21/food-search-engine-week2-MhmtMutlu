@@ -8,9 +8,9 @@ class FoodApp {
     }
 
     async renderApp() {
+        this.favouriteFoods = JSON.parse(localStorage.getItem("favFoods")) || []
         await this.getUserInformation()
         await this.getFoods()
-        console.log(this.foodsArray)
         this.createCards()
     }
 
@@ -25,7 +25,6 @@ class FoodApp {
         `})
         let detailsButtonDOM = document.querySelectorAll(".details-button")
         detailsButtonDOM.forEach(btn => btn.addEventListener("click", (e) => {
-            console.log(detailsButtonDOM[e.target.id].id)
             this.openModals(detailsButtonDOM[e.target.id].id)
         }))
     }
@@ -33,19 +32,23 @@ class FoodApp {
     openModals(id) {
         let modalDOM = document.getElementById("modal")
         let meal = this.foodsArray[id]
-        modalDOM.innerHTML += `
+        let emptyHeart = `<i id="icon" class="far fa-heart fa-3x"></i>`
+        let filledHeart = `<i id="icon" class="fas fa-heart fa-3x"></i>`
+        modalDOM.innerHTML = `
             <div class="modal-content">
                 <img class="modal-image" src=${meal.fields.strMealThumb}>
                 <div class="modal-body">
                     <h3>${meal.fields.strMeal}</h3>
                     <p>
-                        ${meal.fields.strInstructions.length > 300 
-                            ? `${meal.fields.strInstructions.slice(0, 300)}... 
-                            <a href=${meal.fields.strYoutube} target="_blank">For More Informations</a>`
-                            : meal.fields.strInstructions
-                        }
+                        ${meal.fields.strInstructions.slice(0, 270)}... 
+                        <a href=${meal.fields.strYoutube} target="_blank">For More Informations</a>
                     </p>
-                    <button class="favourite-button"><i class="far fa-heart fa-3x"></i></button>
+                    <button class="favourite-button">
+                        ${this.favouriteFoods.findIndex((favourite) => {
+                           return favourite.id === meal.id
+                        }) > -1 
+                            ? filledHeart : emptyHeart}
+                    </button>
                 </div>
                 <span class="close-modal">&times;</span>
             </div>
@@ -53,30 +56,33 @@ class FoodApp {
         modalDOM.style.display= "block"
 
         this.closeModal()
-        this.addToFavourites(meal)
+        
+        this.handleFavouritesFoods(meal)
     }
 
     closeModal() {
         let closeModalDOM = document.querySelector(".close-modal")
         closeModalDOM.addEventListener("click", () => {
             let modalDOM = document.getElementById("modal")
-            modalDOM.innerHTML = ""
             modalDOM.style.display = "none"
         })
     }
 
-    addToFavourites(meal) {
+    handleFavouritesFoods(meal) {
         let favouriteButtonDOM = document.querySelector(".favourite-button")
+        let iconDOM = document.getElementById("icon")
         favouriteButtonDOM.addEventListener("click", () => {
-            console.log(meal.fields.strMeal)
-            favouriteButtonDOM.innerHTML = `<i class="fas fa-heart fa-3x"></i>`
-        })
-    }
-
-    removeFromFavourites() {
-        let favouriteButtonDOM = document.querySelector(".favourite-button")
-        favouriteButtonDOM.addEventListener("click", () => {
-            favouriteButtonDOM.innerHTML = `<i class="far fa-heart fa-3x"></i>`
+            if (iconDOM.className.includes("fas")) {
+                iconDOM.classList = "far fa-heart fa-3x"
+                let index = this.favouriteFoods.indexOf(meal, 1)
+                this.favouriteFoods.splice(index, 1);
+                localStorage.setItem('favFoods', JSON.stringify(this.favouriteFoods));
+            } else if(iconDOM.className.includes("far")) {
+                this.favouriteFoods.push(meal)
+                localStorage.setItem("favFoods", JSON.stringify(this.favouriteFoods))
+                iconDOM.classList = "fas fa-heart fa-3x"
+            }
+            
         })
     }
 
