@@ -1,3 +1,19 @@
+# Food Search App
+
+# 🧰 Toolbox
+
+<ul style="list-style-type:disc">
+   <li><a href="https://parceljs.org/">Parcel</a></li>
+   <li><a href="https://fusejs.io/">Fuse.js</a></li>
+   <li><a href="https://airtable.com/shrZzp5NeTTHthGvH">Airtable API</a></li>
+</ul>
+
+# 🎞 Screenshot
+
+![Proje Resmi](assets/ss1.png)
+![Proje Resmi](assets/ss2.png)
+![Proje Resmi](assets/ss3.png)
+
 ### ODEV ONCESI
 Eğer bu repoyu kullanarak kendi bilgisayarinizda development yapmak isterseniz sirasiyla,
 1) Repoyu clonelayin
