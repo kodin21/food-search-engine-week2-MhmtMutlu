@@ -75,6 +75,7 @@ section {
     text-align: center;
     border-bottom: 5px solid #023047;
     border-radius: 20px;
+    transition: all 0.4s ease;
 }
 
 .card:hover {
