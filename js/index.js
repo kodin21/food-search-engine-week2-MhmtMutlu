@@ -183,11 +183,16 @@ class FoodApp {
 
     // Taking meals from api with fetch
     async getFoods() {
+        // Loading animation's display were changed to show it when taking data from api
+        let loadingAnimDOM = document.querySelector(".loading-anim")
+        loadingAnimDOM.style.display = "inline-block"
         await fetch("https://api.airtable.com/v0/appyLL3B6PD1W44kF/Grid%20view?api_key=keynJKkfPVvo4RLJf")
             .then(response => response.json())
             .then(json => {
                 // Pushing data to foodsArray
                 json.records.forEach(food => {this.foodsArray.push(food)})
+                // Loading animation's display were changed to hide it
+                loadingAnimDOM.style.display = "none"
             })
     }
 }
