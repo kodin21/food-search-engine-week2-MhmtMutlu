@@ -1,11 +1,13 @@
 # Food Search App
 
+<a href="https://food-search-engine.netlify.app/" target="_blank">Live</a>
+
 # 🧰 Toolbox
 
 <ul style="list-style-type:disc">
-   <li><a href="https://parceljs.org/">Parcel</a></li>
-   <li><a href="https://fusejs.io/">Fuse.js</a></li>
-   <li><a href="https://airtable.com/shrZzp5NeTTHthGvH">Airtable API</a></li>
+   <li><a href="https://parceljs.org/" target="_blank">Parcel</a></li>
+   <li><a href="https://fusejs.io/" target="_blank">Fuse.js</a></li>
+   <li><a href="https://airtable.com/shrZzp5NeTTHthGvH" target="_blank">Airtable API</a></li>
 </ul>
 
 # 🎞 Screenshot
