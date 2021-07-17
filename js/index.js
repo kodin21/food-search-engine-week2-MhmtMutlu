@@ -36,15 +36,19 @@ class FoodApp {
         // Taking words from input to search meal
         let searchInputDOM = document.querySelector(".search-input")
         searchInputDOM.addEventListener("input", (e) => {
-            let searchValue = e.target.value
-            if (searchValue === "") {
-                // If there is no word in input, it calls createCards func
-                this.createCards(this.foodsArray)
-            } else if(searchValue != "") {
-                // If there is some words in input, it calls searchedCards func
-                const result = fuse.search(searchValue)
-                this.searchedCards(result)
-            }
+            // setTimeout func was added to limit search operation by time for performance
+            setTimeout(() => {
+
+                let searchValue = e.target.value
+                if (searchValue === "") {
+                    // If there is no word in input, it calls createCards func
+                    this.createCards(this.foodsArray)
+                } else if(searchValue != "") {
+                    // If there is some words in input, it calls searchedCards func
+                    const result = fuse.search(searchValue)
+                    this.searchedCards(result)
+                }
+            }, 500)
         })
     }
 
